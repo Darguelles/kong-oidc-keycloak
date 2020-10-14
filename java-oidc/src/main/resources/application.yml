@@ -1,0 +1,19 @@
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: java-app
+            client-secret: 665af6a4-6ec9-4c5d-a50a-66c7a651a987
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/auth/realms/master
+
