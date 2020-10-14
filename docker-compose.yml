@@ -18,9 +18,10 @@ services:
     ports:
       - "15432:5432"
     environment:
-      POSTGRES_DB:       api-gw
-      POSTGRES_USER:     kong
+      POSTGRES_DB: api-gw
+      POSTGRES_USER: kong
       POSTGRES_PASSWORD:
+      POSTGRES_HOST_AUTH_METHOD: trust
 
   kong:
     build:
@@ -38,17 +39,17 @@ services:
       - "8443:8443" # Listener  (SSL)
       - "8444:8444" # Admin API (SSL)
     environment:
-      KONG_DATABASE:         postgres
-      KONG_PG_HOST:          kong-db
-      KONG_PG_PORT:          5432
-      KONG_PG_DATABASE:      api-gw
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-db
+      KONG_PG_PORT: 5432
+      KONG_PG_DATABASE: api-gw
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
-      KONG_PROXY_ERROR_LOG:  /dev/stderr
-      KONG_ADMIN_ERROR_LOG:  /dev/stderr
-      KONG_PROXY_LISTEN:     0.0.0.0:8000, 0.0.0.0:8443 ssl
-      KONG_ADMIN_LISTEN:     0.0.0.0:8001, 0.0.0.0:8444 ssl
-      KONG_PLUGINS:          oidc
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_PLUGINS: oidc
 
   keycloak-db:
     image: postgres:9.6
@@ -59,8 +60,8 @@ services:
     ports:
       - "25432:5432"
     environment:
-      POSTGRES_DB:       keycloak
-      POSTGRES_USER:     keycloak
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
 
   keycloak:
@@ -72,11 +73,11 @@ services:
     ports:
       - "8180:8080"
     environment:
-      DB_VENDOR:   POSTGRES
-      DB_ADDR:     keycloak-db
-      DB_PORT:     5432
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-db
+      DB_PORT: 5432
       DB_DATABASE: keycloak
-      DB_USER:     keycloak
+      DB_USER: keycloak
       DB_PASSWORD: password
-      KEYCLOAK_USER:     admin
+      KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
