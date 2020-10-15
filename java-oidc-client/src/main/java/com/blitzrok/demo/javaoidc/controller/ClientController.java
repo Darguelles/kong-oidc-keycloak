@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
+import java.util.Arrays;
+import java.util.Objects;
 
 
 @RestController
@@ -23,7 +24,8 @@ public class ClientController {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/home")
     public ResponseEntity Home() {
@@ -37,23 +39,22 @@ public class ClientController {
                         authentication.getAuthorizedClientRegistrationId(),
                         authentication.getName());
         AuthenticationInfo info = new AuthenticationInfo(authorizedClient.getAccessToken().getTokenValue(),
-                authorizedClient.getRefreshToken().getTokenValue());
-        log.info(info.toString());
-        return "ok";
+                Objects.requireNonNull(authorizedClient.getRefreshToken()).getTokenValue());
+        log.debug(info.toString());
+        return "Check the console to get authentication info";
     }
 
     @GetMapping("/get-mocks")
-    public String GetMocks(OAuth2AuthenticationToken authentication) {
+    public ResponseEntity GetMocks(OAuth2AuthenticationToken authentication) {
         OAuth2AuthorizedClient authorizedClient =
                 this.authorizedClientService.loadAuthorizedClient(
                         authentication.getAuthorizedClientRegistrationId(),
                         authentication.getName());
         HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer "+ authorizedClient.getAccessToken().getTokenValue());
-        log.info("Authorization token set: " + authorizedClient.getAccessToken().getTokenValue());
-        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-        String result = restTemplate.getForObject("http://localhost:8000/mock", String.class, entity);
-        return result;
+        headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        return restTemplate.exchange("http://localhost:8000/mock", HttpMethod.GET, entity, String.class);
     }
 }
