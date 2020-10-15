@@ -13,7 +13,7 @@ redirected to the login page. This validation is performed by the OIDC plugin, t
 
 ![diagram](doc/kong-keycloak-oidc.png)
 
-##Configuration
+## Configuration
 
 ### Kong
 The first time you'll need to run the migrations on the kong-db container before any other. The
