@@ -1,12 +1,12 @@
 configure_kong_service:
 	curl -s -X POST http://localhost:8001/services \
-		-d name=java-request \
-		-d url=http://localhost:9000
+		-d name=java-project \
+		-d url=http://localhost:9000/home
 
 configure_kong_route:
-	curl -i -X POST http://localhost:8001/services/java-request/routes \
+	curl -i -X POST http://localhost:8001/services/java-api/routes \
 	  --data 'paths[]=/home' \
-	  --data name=java-request
+	  --data name=java-api
 
 verify_java:
 	curl -i -X GET http://localhost:9000/home
