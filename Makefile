@@ -6,5 +6,8 @@ bootstrap:
 start:
 	docker-compose up
 
-init_kong:
+prepare_kong:
 	$(MAKE) -C kong init
+
+start_java_client:
+	$(MAKE) -C java-oidc-client run
