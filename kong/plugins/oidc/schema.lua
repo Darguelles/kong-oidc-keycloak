@@ -7,6 +7,8 @@ return {
     introspection_endpoint = { type = "string", required = false },
     timeout = { type = "number", required = false },
     introspection_endpoint_auth_method = { type = "string", required = false },
+    introspection_expiry_claim = { type = "string", required = false, default = "exp" },
+    introspection_interval = { type = "number", required = false, default = 0 },
     bearer_only = { type = "string", required = true, default = "no" },
     realm = { type = "string", required = true, default = "kong" },
     redirect_uri_path = { type = "string" },

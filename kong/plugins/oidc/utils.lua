@@ -47,6 +47,8 @@ function M.get_options(config, ngx)
     introspection_endpoint = config.introspection_endpoint,
     timeout = config.timeout,
     introspection_endpoint_auth_method = config.introspection_endpoint_auth_method,
+    introspection_expiry_claim = config.introspection_expiry_claim,
+    introspection_interval = config.introspection_interval,
     bearer_only = config.bearer_only,
     realm = config.realm,
     redirect_uri_path = config.redirect_uri_path or M.get_redirect_uri_path(ngx),

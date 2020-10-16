@@ -64,6 +64,11 @@ function make_oidc(oidcConfig)
 end
 
 function introspect(oidcConfig)
+  ngx.log(ngx.DEBUG, "Introspect INIT")
+  for i,v in pairs(oidcConfig) do
+    ngx.log(ngx.DEBUG, i)
+    ngx.log(ngx.DEBUG, tostring(v))
+  end
   if utils.has_bearer_access_token() or oidcConfig.bearer_only == "yes" then
     local res, err = require("resty.openidc").introspect(oidcConfig)
     if err then
