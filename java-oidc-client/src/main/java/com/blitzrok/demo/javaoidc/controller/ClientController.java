@@ -5,9 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -44,6 +46,13 @@ public class ClientController {
         return "Check the console to get authentication info";
     }
 
+    @GetMapping("/oidc-principal")
+    public OidcUser getOidcUserPrincipal(
+            @AuthenticationPrincipal OidcUser principal) {
+        log.info(principal.toString());
+        return principal;
+    }
+
     @GetMapping("/get-mocks")
     public ResponseEntity GetMocks(OAuth2AuthenticationToken authentication) {
         OAuth2AuthorizedClient authorizedClient =
@@ -55,6 +64,11 @@ public class ClientController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        return restTemplate.exchange("http://localhost:8000/mock", HttpMethod.GET, entity, String.class);
+
+        ResponseEntity res = restTemplate.exchange("http://localhost:8000/mock", HttpMethod.GET, entity, String.class);
+        res.getHeaders().forEach((key, value) -> {
+            log.info(String.format("Header '%s' = %s", key, value));
+        });
+        return res;
     }
 }
