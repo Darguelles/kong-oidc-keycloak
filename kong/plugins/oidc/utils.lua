@@ -13,8 +13,10 @@ local function parseFilters(csvFilters)
 end
 
 function M.get_redirect_uri_path(ngx)
+  ngx.log(ngx.DEBUG, "Get redirect uri path: " .. tostring(ngx))
   local function drop_query()
     local uri = ngx.var.request_uri
+    ngx.log(ngx.DEBUG, "NGINX var request URI: " .. uri)
     local x = uri:find("?")
     if x then
       return uri:sub(1, x - 1)
@@ -24,6 +26,7 @@ function M.get_redirect_uri_path(ngx)
   end
 
   local function tackle_slash(path)
+    ngx.log(ngx.DEBUG, "Tacke slash: " .. path)
     local args = ngx.req.get_uri_args()
     if args and args.code then
       return path
@@ -49,9 +52,11 @@ function M.get_options(config, ngx)
     introspection_endpoint_auth_method = config.introspection_endpoint_auth_method,
     introspection_expiry_claim = config.introspection_expiry_claim,
     introspection_interval = config.introspection_interval,
+    introspection_cache_ignore = config.introspection_cache_ignore,
     bearer_only = config.bearer_only,
     realm = config.realm,
     redirect_uri_path = config.redirect_uri_path or M.get_redirect_uri_path(ngx),
+    redirect_uri = config.redirect_uri,
     scope = config.scope,
     response_type = config.response_type,
     ssl_verify = config.ssl_verify,
@@ -60,6 +65,12 @@ function M.get_options(config, ngx)
     filters = parseFilters(config.filters),
     logout_path = config.logout_path,
     redirect_after_logout_uri = config.redirect_after_logout_uri,
+  }
+end
+
+function M.get_session_options(config, ngx)
+  return {
+    name = config.session_name,
   }
 end
 

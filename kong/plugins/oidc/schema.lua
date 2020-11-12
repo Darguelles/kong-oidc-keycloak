@@ -9,9 +9,11 @@ return {
     introspection_endpoint_auth_method = { type = "string", required = false },
     introspection_expiry_claim = { type = "string", required = false, default = "exp" },
     introspection_interval = { type = "number", required = false, default = 0 },
+    introspection_cache_ignore = { type = "boolean", required = false, default = false },
     bearer_only = { type = "string", required = true, default = "no" },
     realm = { type = "string", required = true, default = "kong" },
     redirect_uri_path = { type = "string" },
+    redirect_uri = { type = "string" },
     scope = { type = "string", required = true, default = "openid" },
     response_type = { type = "string", required = true, default = "code" },
     ssl_verify = { type = "string", required = true, default = "no" },
@@ -20,6 +22,7 @@ return {
     recovery_page_path = { type = "string" },
     logout_path = { type = "string", required = false, default = '/logout' },
     redirect_after_logout_uri = { type = "string", required = false, default = '/' },
-    filters = { type = "string" }
+    filters = { type = "string" },
+    session_name = { type = "string" }
   }
 }
