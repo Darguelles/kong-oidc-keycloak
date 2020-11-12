@@ -57,8 +57,6 @@ end
 
 function make_oidc(oidcConfig, sessionConfig)
     ngx.log(ngx.INFO, "OidcHandler calling authenticate, requested path: " .. ngx.var.request_uri)
-    ngx.var.session_name = "EL_CACHORRO"
-    ngx.log(ngx.INFO, "Session NAME: " .. ngx.var.session_name)
     local res, err = require("resty.openidc").authenticate(oidcConfig, nil, nil, sessionConfig)
     if err then
         if oidcConfig.recovery_page_path then

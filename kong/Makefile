@@ -1,4 +1,4 @@
-kong_secret=<your-client-secret>
+kong_secret=<your-kong-secret>
 init: create_service create_route configure_oidc_plugin
 
 create_service:
@@ -19,6 +19,7 @@ configure_oidc_plugin:
           -d config.client_secret=${kong_secret} \
           -d config.discovery=http://keycloak-host:8180/auth/realms/master/.well-known/openid-configuration \
           -d config.introspection_endpoint=http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token/introspect \
+          -d config.session_name=LE_TONGE \
 
 print_access_token:
 	curl -s http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token \
@@ -33,3 +34,15 @@ verify_active_token:
 		 -d client_id=kong \
 		 -d client_secret=${kong_secret} \
 		 | python -mjson.tool
+
+
+# It will configure the plugin with the Kong client created in Keycloak
+patch_oidc_plugin:
+	curl -s -X PATCH http://localhost:8001/plugins/844127e0-c54f-4970-96db-156f8abc636f \
+          -d name=oidc \
+          -d config.client_id=kong \
+          -d config.client_secret=${kong_secret} \
+          -d config.discovery=http://keycloak-host:8180/auth/realms/master/.well-known/openid-configuration \
+          -d config.introspection_endpoint=http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token/introspect \
+          -d config.introspection_cache_ignore=false \
+          -d config.session_name=LE_TONGE

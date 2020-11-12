@@ -11,3 +11,9 @@ prepare_kong:
 
 start_java_client:
 	$(MAKE) -C java-oidc-client run
+
+# For development purposes
+reload_kong:
+	docker-compose down
+	docker rmi kong-oidc_kong
+	docker-compose up
