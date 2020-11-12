@@ -23,6 +23,12 @@ return {
     logout_path = { type = "string", required = false, default = '/logout' },
     redirect_after_logout_uri = { type = "string", required = false, default = '/' },
     filters = { type = "string" },
-    session_name = { type = "string" }
+    session_name = { type = "string" },
+--    session_storage = { type = "string" },
+--    redis = {
+--      host = { type = "string" },
+--      port = { type = "string" },
+--      database = { type = "string" },
+--    }
   }
 }
