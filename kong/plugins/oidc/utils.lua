@@ -71,6 +71,11 @@ end
 function M.get_session_options(config, ngx)
   return {
     name = config.session_name,
+    storage = config.session_storage,
+    redis = {
+      host = config.session_redis_host,
+      port = config.session_redis_port,
+    }
   }
 end
 
@@ -81,7 +86,7 @@ function M.exit(httpStatusCode, message, ngxCode)
 end
 
 function M.injectAccessToken(accessToken)
-  ngx.req.set_header("X-Access-Token", accessToken)
+  ngx.req.set_header("Authorization", "Bearer " .. accessToken)
 end
 
 function M.injectIDToken(idToken)

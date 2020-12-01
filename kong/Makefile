@@ -1,4 +1,4 @@
-kong_secret=<your-kong-secret>
+kong_secret=<kong-secret>
 init: create_service create_route configure_oidc_plugin
 
 create_service:
@@ -6,10 +6,20 @@ create_service:
 			-d name=mock-request \
 			-d url=http://mockbin.org/request
 
+create_service:
+	curl -s -X POST http://localhost:8001/services \
+			-d name=userinfo \
+			-d url=http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/userinfo
+
 create_route:
 	curl -i -X POST http://localhost:8001/services/mock-request/routes \
 		  --data 'paths[]=/mock' \
 		  --data name=mock-request
+
+create_route:
+	curl -i -X POST http://localhost:8001/services/userinfo/routes \
+		  --data 'paths[]=/userinfo' \
+		  --data name=userinfo
 
 # It will configure the plugin with the Kong client created in Keycloak
 configure_oidc_plugin:
@@ -45,4 +55,7 @@ patch_oidc_plugin:
           -d config.discovery=http://keycloak-host:8180/auth/realms/master/.well-known/openid-configuration \
           -d config.introspection_endpoint=http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token/introspect \
           -d config.introspection_cache_ignore=false \
-          -d config.session_name=LE_TONGE
+          -d config.session_name=MY_SESSION \
+          -d config.session_storage=redis \
+          -d config.session_redis_host=redis \
+          -d config.session_redis_port=6379
