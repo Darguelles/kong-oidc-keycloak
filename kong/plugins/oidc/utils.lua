@@ -13,10 +13,8 @@ local function parseFilters(csvFilters)
 end
 
 function M.get_redirect_uri_path(ngx)
-    ngx.log(ngx.DEBUG, "Get redirect uri path: " .. tostring(ngx))
     local function drop_query()
         local uri = ngx.var.request_uri
-        ngx.log(ngx.DEBUG, "NGINX var request URI: " .. uri)
         local x = uri:find("?")
         if x then
             return uri:sub(1, x - 1)
@@ -26,7 +24,6 @@ function M.get_redirect_uri_path(ngx)
     end
 
     local function tackle_slash(path)
-        ngx.log(ngx.DEBUG, "Tacke slash: " .. path)
         local args = ngx.req.get_uri_args()
         if args and args.code then
             return path

@@ -21,8 +21,6 @@ function OidcHandler:access(config)
     else
         ngx.log(ngx.DEBUG, "OidcHandler ignoring request, path: " .. ngx.var.request_uri)
     end
-
-    ngx.log(ngx.DEBUG, "OidcHandler done")
 end
 
 function handle(oidcConfig, sessionConfig)
@@ -68,7 +66,6 @@ function make_oidc(oidcConfig, sessionConfig)
 end
 
 function introspect(oidcConfig)
-    ngx.log(ngx.INFO, "Introspect INIT")
     ngx.log(ngx.INFO, utils.has_bearer_access_token())
     if utils.has_bearer_access_token() or oidcConfig.bearer_only == "yes" then
         local res, err = require("resty.openidc").introspect(oidcConfig)
