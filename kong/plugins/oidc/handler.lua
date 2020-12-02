@@ -26,7 +26,6 @@ function OidcHandler:access(config)
 end
 
 function handle(oidcConfig, sessionConfig)
-    ngx.log(ngx.DEBUG, "INIT HANDLER")
     local response
     if oidcConfig.introspection_endpoint then
         response = introspect(oidcConfig)
