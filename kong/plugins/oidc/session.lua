@@ -9,6 +9,7 @@ function M.configure(config)
       utils.exit(500, "invalid OIDC plugin configuration, session secret could not be decoded", ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR))
     end
     ngx.var.session_secret = decoded_session_secret
+    ngx.var.session_name = "KUKI_TEST"
   end
 end
 
