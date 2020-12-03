@@ -9,6 +9,7 @@ This is a functional example about how to use Kong opensource distribution with
 The [kong-oidc](https://github.com/nokia/kong-oidc) plugin is currently unmaintained, being June 2019 the last 
 time it was modified. BTW, I've downloaded the plugin files and updated them to accomplish my own needs, adding more
 flexibility to session management.
+
 ---
 
 ## Main flow
