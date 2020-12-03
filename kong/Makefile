@@ -29,7 +29,7 @@ configure_oidc_plugin:
           -d config.client_secret=${kong_secret} \
           -d config.discovery=http://keycloak-host:8180/auth/realms/master/.well-known/openid-configuration \
           -d config.introspection_endpoint=http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token/introspect \
-          -d config.session_name=LE_TONGE \
+          -d config.session_name=MY_SESSION \
 
 print_access_token:
 	curl -s http://keycloak-host:8180/auth/realms/master/protocol/openid-connect/token \
