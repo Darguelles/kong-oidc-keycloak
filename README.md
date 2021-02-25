@@ -146,6 +146,10 @@ Once the infrastructure is configured, you need to setup the Java client with th
 connection with Keycloak. Check the [README](java-oidc-client/README.md) file to get more detail about how to run
 this projects and the available endpoints.
 
+### Note:
+Make sure to include the keycloak-host targeting your local IP in your hosts file and docker-compose, otherwise 
+you will face Keycloak deploy issues and connection errors.
+
 ## Acknowledgment
 This project is inspired by the articles Securing APIs with Kong and Keycloak. Find available the 
 [part 1](https://www.jerney.io/secure-apis-kong-keycloak-1/) and 
